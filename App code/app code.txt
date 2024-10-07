@@ -1,0 +1,253 @@
+import React, { useState } from 'react';
+import { View, Text, TextInput, StyleSheet, FlatList, TouchableOpacity, Alert } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { Picker } from '@react-native-picker/picker';
+
+const Stack = createStackNavigator();
+
+// Login Screen
+const LoginScreen = ({ navigation }) => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleLogin = () => {
+    if (username && password) {
+      navigation.navigate('Home');
+    } else {
+      Alert.alert('Error', 'Please enter username and password');
+    }
+  };
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.header}>Login</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Username"
+        placeholderTextColor="#aaa"
+        value={username}
+        onChangeText={setUsername}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Password"
+        placeholderTextColor="#aaa"
+        value={password}
+        onChangeText={setPassword}
+        secureTextEntry
+      />
+      <TouchableOpacity style={styles.addButton} onPress={handleLogin}>
+        <Text style={styles.addButtonText}>Log In</Text>
+      </TouchableOpacity>
+    </View>
+  );
+};
+
+// Home Screen
+const HomeScreen = ({ navigation, menu }) => {
+  const total = menu.reduce((sum, item) => sum + item.price, 0);
+  const average = menu.length > 0 ? total / menu.length : 0;
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.header}>Chef's Menu</Text>
+      <Text style={styles.subheader}>Total Menu Items: {menu.length}</Text>
+      <Text style={styles.subheader}>Total Price: R{total.toFixed(2)}</Text>
+      <Text style={styles.subheader}>Average Price: R{average.toFixed(2)}</Text>
+
+      <FlatList
+        data={menu}
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={({ item }) => (
+          <View style={styles.menuItem}>
+            <Text style={styles.menuText}>{item.dishName}</Text>
+            <Text style={styles.courseText}>{item.course}</Text>
+            <Text style={styles.descriptionText}>{item.description}</Text>
+            <Text style={styles.priceText}>R{item.price.toFixed(2)}</Text>
+          </View>
+        )}
+      />
+
+      <TouchableOpacity
+        style={styles.addButton}
+        onPress={() => navigation.navigate('Add Menu Item')}
+      >
+        <Text style={styles.addButtonText}>Add New Menu Item</Text>
+      </TouchableOpacity>
+    </View>
+  );
+};
+
+// Add Menu Item Screen
+const AddMenuItemScreen = ({ navigation, addMenuItem }) => {
+  const [dishName, setDishName] = useState('');
+  const [description, setDescription] = useState('');
+  const [course, setCourse] = useState('');
+  const [price, setPrice] = useState('');
+
+  const handleAddItem = () => {
+    if (!dishName || !description || !course || !price) {
+      Alert.alert('Error', 'Please fill in all fields');
+      return;
+    }
+
+    const newItem = { dishName, description, course, price: parseFloat(price) };
+    addMenuItem(newItem);
+    Alert.alert('Success', 'Menu Item Added Successfully');
+    navigation.goBack(); // Go back to the Home screen
+  };
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.header}>Add Menu Item</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Dish Name"
+        placeholderTextColor="#aaa"
+        value={dishName}
+        onChangeText={setDishName}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Description"
+        placeholderTextColor="#aaa"
+        value={description}
+        onChangeText={setDescription}
+      />
+      <Picker
+        selectedValue={course}
+        onValueChange={(itemValue) => setCourse(itemValue)}
+        style={styles.picker}
+      >
+        <Picker.Item label="Select Course" value="" />
+        <Picker.Item label="Starter" value="Starter" />
+        <Picker.Item label="Main" value="Main" />
+        <Picker.Item label="Dessert" value="Dessert" />
+        <Picker.Item label="Appetizer" value="Appetizer" />
+        <Picker.Item label="Salad" value="Salad" />
+        <Picker.Item label="Soup" value="Soup" />
+        <Picker.Item label="Side Dish" value="Side Dish" />
+        <Picker.Item label="Sandwich" value="Sandwich" />
+        <Picker.Item label="Pasta" value="Pasta" />
+        <Picker.Item label="Grill" value="Grill" />
+        <Picker.Item label="Beverage" value="Beverage" />
+      </Picker>
+      <TextInput
+        style={styles.input}
+        placeholder="Price"
+        placeholderTextColor="#aaa"
+        value={price}
+        onChangeText={setPrice}
+        keyboardType="numeric"
+      />
+      <TouchableOpacity style={styles.addButton} onPress={handleAddItem}>
+        <Text style={styles.addButtonText}>Add to Menu</Text>
+      </TouchableOpacity>
+    </View>
+  );
+};
+
+// Main App Component
+export default function App() {
+  const [menu, setMenu] = useState([]);
+
+  const addMenuItem = (item) => {
+    setMenu([...menu, item]);
+  };
+
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Home">
+          {(props) => <HomeScreen {...props} menu={menu} />}
+        </Stack.Screen>
+        <Stack.Screen name="Add Menu Item">
+          {(props) => <AddMenuItemScreen {...props} addMenuItem={addMenuItem} />}
+        </Stack.Screen>
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
+
+// Styles
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: '#fff3e6', // Warm cream background
+  },
+  header: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: '#b02d19', // Deep red color
+    marginBottom: 20,
+    textAlign: 'center',
+  },
+  subheader: {
+    fontSize: 16,
+    color: '#666', // Darker gray for subheader
+    marginBottom: 20,
+    textAlign: 'center',
+  },
+  input: {
+    height: 50,
+    backgroundColor: '#fff', // White input fields
+    borderColor: '#b02d19', // Matching border color
+    borderWidth: 1,
+    borderRadius: 8,
+    paddingHorizontal: 15,
+    fontSize: 16,
+    marginBottom: 15,
+  },
+  picker: {
+    height: 50,
+    width: '100%',
+    backgroundColor: '#fff', // White picker background
+    borderColor: '#b02d19', // Matching border color
+    borderWidth: 1,
+    borderRadius: 8,
+    marginBottom: 15,
+  },
+  menuItem: {
+    backgroundColor: '#fff', // White background for menu items
+    padding: 15,
+    borderRadius: 8,
+    marginBottom: 10,
+    borderColor: '#ddd', // Lighter border
+    borderWidth: 1,
+  },
+  menuText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#b02d19', // Deep red color for menu item titles
+  },
+  courseText: {
+    fontSize: 16,
+    color: '#888', // Dark gray for course type
+    marginBottom: 5,
+  },
+  descriptionText: {
+    fontSize: 14,
+    color: '#555', // Slightly lighter gray for descriptions
+    marginBottom: 5,
+  },
+  priceText: {
+    fontSize: 16,
+    color: '#28a745', // Green color for price
+    fontWeight: 'bold',
+  },
+  addButton: {
+    backgroundColor: '#b02d19', // Deep red for add button
+    padding: 15,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  addButtonText: {
+    color: '#fff', // White text for add button
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+});

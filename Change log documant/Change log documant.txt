@@ -1,0 +1,22 @@
+Mast      -	ST10446912	- 	Changelog
+
+26 September 2024
+added - login page,and homescreen
+
+29 September 2024 
+added new content to the word document
+
+30 September 2024
+tested everything
+done video on how the app works 
+
+
+Changelog
+added:			New Features
+fixed:			Bug fix
+chanaged:			Feature changed
+deprecated:		New deprection
+removed: 			Feature removal
+security:			Security fix
+performance:		Performance improvement
+other:			Other
