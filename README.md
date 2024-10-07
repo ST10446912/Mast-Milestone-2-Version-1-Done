@@ -17,7 +17,7 @@ Conclusion
 
 To sum up, the Digital Menu App is a game-changer that improves diners' experiences and simplifies operations for eateries, much beyond being merely a contemporary convenience. These kinds of improvements will become more and more essential to the restaurant business as technology develops, raising the bar for efficiency, convenience, and patron happiness. With the help of the Digital Menu App, welcome to the future of eating.
 
-
+# Pictures
 Figure 1
 Login page
 ![login page](https://github.com/user-attachments/assets/09eecc6c-4b01-4687-b4e3-0f009807bb7a)
@@ -62,11 +62,11 @@ Client information
 
 
 
-Video on how the app works into action:
+# Video on how the app works into action:
 
 
 
-#Reason for using Github Actions Reason for using Github: We are using github for the purpose for us to edit and still push many times as we can and the readme file will work.
+# Reason for using Github Actions Reason for using Github: We are using github for the purpose for us to edit and still push many times as we can and the readme file will work.
 
 About Github: Steps: These are the individual tasks that make up a job.
 
