@@ -1,3 +1,5 @@
+
+//Javascript///
 import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, FlatList, TouchableOpacity, Alert } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
@@ -248,6 +250,359 @@ const styles = StyleSheet.create({
   addButtonText: {
     color: '#fff', // White text for add button
     fontSize: 16,
+    fontWeight: 'bold',
+  },
+});
+
+//Typescript//
+import React, { useState } from 'react';
+import { View, Text, TextInput, StyleSheet, FlatList, TouchableOpacity, Alert } from 'react-native';
+import { NavigationContainer, NavigationProp } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { Picker } from '@react-native-picker/picker';
+
+type RootStackParamList = {
+  Login: undefined;
+  Home: undefined;
+  'Add Menu Item': undefined;
+  'Client Information': undefined;
+};
+
+const Stack = createStackNavigator<RootStackParamList>();
+
+interface MenuItem {
+  dishName: string;
+  description: string;
+  course: string;
+  price: number;
+}
+
+interface ClientInfo {
+  name: string;
+  contact: string;
+  date: string;
+}
+
+// Login Screen
+const LoginScreen = ({ navigation }: { navigation: NavigationProp<RootStackParamList, 'Login'> }) => {
+  const [username, setUsername] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+
+  const handleLogin = () => {
+    if (username && password) {
+      navigation.navigate('Home');
+    } else {
+      Alert.alert('Error', 'Please enter username and password');
+    }
+  };
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.header}>Login</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Username"
+        placeholderTextColor="#aaa"
+        value={username}
+        onChangeText={setUsername}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Password"
+        placeholderTextColor="#aaa"
+        value={password}
+        onChangeText={setPassword}
+        secureTextEntry
+      />
+      <TouchableOpacity style={styles.addButton} onPress={handleLogin}>
+        <Text style={styles.addButtonText}>Log In</Text>
+      </TouchableOpacity>
+    </View>
+  );
+};
+
+// Home Screen
+const HomeScreen = ({
+  navigation,
+  menu,
+  clientInfo,
+}: {
+  navigation: NavigationProp<RootStackParamList, 'Home'>;
+  menu: MenuItem[];
+  clientInfo: ClientInfo | null;
+}) => {
+  const total = menu.reduce((sum, item) => sum + item.price, 0);
+  const average = menu.length > 0 ? total / menu.length : 0;
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.header}>Chef's Menu</Text>
+      <Text style={styles.subheader}>Total Menu Items: {menu.length}</Text>
+      <Text style={styles.subheader}>Total Price: R{total.toFixed(2)}</Text>
+      <Text style={styles.subheader}>Average Price: R{average.toFixed(2)}</Text>
+
+      <FlatList
+        data={menu}
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={({ item }) => (
+          <View style={styles.menuItem}>
+            <Text style={styles.menuText}>{item.dishName}</Text>
+            <Text style={styles.courseText}>{item.course}</Text>
+            <Text style={styles.descriptionText}>{item.description}</Text>
+            <Text style={styles.priceText}>R{item.price.toFixed(2)}</Text>
+          </View>
+        )}
+      />
+
+      <TouchableOpacity style={styles.addButton} onPress={() => navigation.navigate('Add Menu Item')}>
+        <Text style={styles.addButtonText}>Add New Menu Item</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.addButton} onPress={() => navigation.navigate('Client Information')}>
+        <Text style={styles.addButtonText}>Client Information</Text>
+      </TouchableOpacity>
+
+      {clientInfo && (
+        <View style={styles.clientInfoContainer}>
+          <Text style={styles.header}>Client Information</Text>
+          <Text style={styles.clientInfoText}>Name: {clientInfo.name}</Text>
+          <Text style={styles.clientInfoText}>Contact: {clientInfo.contact}</Text>
+          <Text style={styles.clientInfoText}>Date of Order: {clientInfo.date}</Text>
+        </View>
+      )}
+    </View>
+  );
+};
+
+// Client Information Screen
+const ClientScreen = ({
+  navigation,
+  saveClientInfo,
+}: {
+  navigation: NavigationProp<RootStackParamList, 'Client Information'>;
+  saveClientInfo: (info: ClientInfo) => void;
+}) => {
+  const [clientName, setClientName] = useState<string>('');
+  const [clientContact, setClientContact] = useState<string>('');
+  const [clientDateOfOrder, setClientDateOfOrder] = useState<string>('');
+
+  const handleSaveClient = () => {
+    if (!clientName || !clientContact || !clientDateOfOrder) {
+      Alert.alert('Error', 'Please fill in all fields');
+    } else {
+      const clientInfo: ClientInfo = {
+        name: clientName,
+        contact: clientContact,
+        date: clientDateOfOrder,
+      };
+      saveClientInfo(clientInfo);
+      Alert.alert('Success', 'Client Information Saved');
+      navigation.goBack();
+    }
+  };
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.header}>Client Information</Text>
+
+      <TextInput
+        style={styles.input}
+        placeholder="Client Name"
+        placeholderTextColor="#aaa"
+        value={clientName}
+        onChangeText={setClientName}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Contact Number"
+        placeholderTextColor="#aaa"
+        value={clientContact}
+        onChangeText={setClientContact}
+        keyboardType="numeric"
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Date of Order"
+        placeholderTextColor="#aaa"
+        value={clientDateOfOrder}
+        onChangeText={setClientDateOfOrder}
+      />
+
+      <TouchableOpacity style={styles.addButton} onPress={handleSaveClient}>
+        <Text style={styles.addButtonText}>Save Client</Text>
+      </TouchableOpacity>
+    </View>
+  );
+};
+
+// Add Menu Item Screen
+const AddMenuItemScreen = ({
+  navigation,
+  addMenuItem,
+}: {
+  navigation: NavigationProp<RootStackParamList, 'Add Menu Item'>;
+  addMenuItem: (item: MenuItem) => void;
+}) => {
+  const [dishName, setDishName] = useState<string>('');
+  const [description, setDescription] = useState<string>('');
+  const [course, setCourse] = useState<string>('');
+  const [price, setPrice] = useState<string>('');
+
+  const handleAddItem = () => {
+    if (!dishName || !description || !course || !price) {
+      Alert.alert('Error', 'Please fill in all fields');
+      return;
+    }
+
+    const newItem: MenuItem = { dishName, description, course, price: parseFloat(price) };
+    addMenuItem(newItem);
+    Alert.alert('Success', 'Menu Item Added Successfully');
+    navigation.goBack();
+  };
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.header}>Add Menu Item</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Dish Name"
+        placeholderTextColor="#aaa"
+        value={dishName}
+        onChangeText={setDishName}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Description"
+        placeholderTextColor="#aaa"
+        value={description}
+        onChangeText={setDescription}
+      />
+      <Picker selectedValue={course} onValueChange={(itemValue) => setCourse(itemValue)} style={styles.picker}>
+        <Picker.Item label="Select Course" value="" />
+        <Picker.Item label="Starter" value="Starter" />
+        <Picker.Item label="Main" value="Main" />
+        <Picker.Item label="Dessert" value="Dessert" />
+        <Picker.Item label="Appetizer" value="Appetizer" />
+        <Picker.Item label="Salad" value="Salad" />
+        <Picker.Item label="Soup" value="Soup" />
+        <Picker.Item label="Side Dish" value="Side Dish" />
+        <Picker.Item label="Sandwich" value="Sandwich" />
+        <Picker.Item label="Pasta" value="Pasta" />
+        <Picker.Item label="Grill" value="Grill" />
+        <Picker.Item label="Beverage" value="Beverage" />
+      </Picker>
+      <TextInput
+        style={styles.input}
+        placeholder="Price"
+        placeholderTextColor="#aaa"
+        value={price}
+        onChangeText={setPrice}
+        keyboardType="numeric"
+      />
+      <TouchableOpacity style={styles.addButton} onPress={handleAddItem}>
+        <Text style={styles.addButtonText}>Add to Menu</Text>
+      </TouchableOpacity>
+    </View>
+  );
+};
+
+// Main App Component
+export default function App() {
+  const [menu, setMenu] = useState<MenuItem[]>([]);
+  const [clientInfo, setClientInfo] = useState<ClientInfo | null>(null);
+
+  const addMenuItem = (item: MenuItem) => {
+    setMenu([...menu, item]);
+  };
+
+  const saveClientInfo = (info: ClientInfo) => {
+    setClientInfo(info);
+  };
+
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Home">
+          {(props) => <HomeScreen {...props} menu={menu} clientInfo={clientInfo} />}
+        </Stack.Screen>
+        <Stack.Screen name="Add Menu Item">
+          {(props) => <AddMenuItemScreen {...props} addMenuItem={addMenuItem} />}
+        </Stack.Screen>
+        <Stack.Screen name="Client Information">
+          {(props) => <ClientScreen {...props} saveClientInfo={saveClientInfo} />}
+        </Stack.Screen>
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 16,
+    backgroundColor: '#fff',
+  },
+  header: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 12,
+  },
+  subheader: {
+    fontSize: 18,
+    marginVertical: 6,
+  },
+  menuItem: {
+    padding: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ddd',
+  },
+  menuText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  courseText: {
+    fontSize: 16,
+    fontStyle: 'italic',
+  },
+  descriptionText: {
+    fontSize: 14,
+  },
+  priceText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  clientInfoContainer: {
+    marginTop: 24,
+    padding: 12,
+    borderWidth: 1,
+    borderColor: '#ddd',
+  },
+  clientInfoText: {
+    fontSize: 16,
+  },
+  input: {
+    height: 40,
+    borderColor: '#ddd',
+    borderWidth: 1,
+    marginBottom: 12,
+    paddingHorizontal: 8,
+  },
+  picker: {
+    height: 50,
+    marginBottom: 12,
+  },
+  addButton: {
+    backgroundColor: '#007bff',
+    padding: 10,
+    borderRadius: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+
+    marginVertical: 10,
+  },
+  addButtonText: {
+    color: '#fff',
     fontWeight: 'bold',
   },
 });
