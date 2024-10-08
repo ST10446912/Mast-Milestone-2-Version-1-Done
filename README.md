@@ -58,11 +58,12 @@ Order list
 
 Figure 6
 Client information
-![client](https://github.com/user-attachments/assets/927533c5-f0d0-4a3c-93e1-58ae5be4e936) if that dont work thers another link
-
+![client](https://github.com/user-attachments/assets/927533c5-f0d0-4a3c-93e1-58ae5be4e936)
 
 
 # Video on how the app works into action:
+If that dont work thers another link
+
 Link 1 
 https://advtechonline-my.sharepoint.com/:v:/g/personal/st10446912_vcconnect_edu_za/EfZnDWfrZv1BhVXRB2lFEWwBAdqyNYWwxowiwLBJGsNajw?e=wMBL5M&nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZy1MaW5rIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0%3D
 
