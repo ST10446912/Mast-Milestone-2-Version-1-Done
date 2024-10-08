@@ -69,23 +69,7 @@ https://advtechonline-my.sharepoint.com/:v:/g/personal/st10446912_vcconnect_edu_
 Link 2
 [Recording-20241008_095937.webm](https://github.com/user-attachments/assets/f1380e2e-554f-4a2a-8a9e-d31ce02ba640)
 
-# Reason for using Github Actions Reason for using Github: We are using github for the purpose for us to edit and still push many times as we can and the readme file will work.
 
-About Github: Steps: These are the individual tasks that make up a job.
-
-Each step can run commands (run:), run setup tasks (uses:) set job-level environment variables. The steps include checking out the repository setting up Java running tests building the project creating APKs and AABs uploading the build artifacts to GitHub. More about github:
-
-Name: This is the name of the workflow that appears on GitHub when the action is run.
-
-Env: These are environment variables accessible to all jobs and steps in the workflow. In this case, main_project_module is set to app, and playstore_name is set to IIECat.
-
-On: This section defines the events that will trigger the workflow. In this case, the workflow will run when there’s a push to the release branch or when the workflow is manually triggered from the Actions tab (workflow_dispatch).
-
-Jobs: This section contains all the jobs that will be run in the workflow. In this case, there’s only one job named build.
-
-Runs-On: This specifies the type of machine to run the job on. Here, it’s set to run on the latest version of Ubuntu.
-
-Uses: This is used to include external actions. For example, actions/checkout@v3 checks out your repository onto the runner, and actions/setup-java@v3 sets up a JDK environment for use in actions.
 
 Reference List:
 
