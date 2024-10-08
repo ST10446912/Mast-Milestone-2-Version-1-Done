@@ -63,9 +63,11 @@ Client information
 
 
 # Video on how the app works into action:
+Link 1 
 https://advtechonline-my.sharepoint.com/:v:/g/personal/st10446912_vcconnect_edu_za/EfZnDWfrZv1BhVXRB2lFEWwBAdqyNYWwxowiwLBJGsNajw?e=wMBL5M&nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZy1MaW5rIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0%3D
 
-
+Link 2
+[Recording-20241008_095937.webm](https://github.com/user-attachments/assets/f1380e2e-554f-4a2a-8a9e-d31ce02ba640)
 
 # Reason for using Github Actions Reason for using Github: We are using github for the purpose for us to edit and still push many times as we can and the readme file will work.
 
